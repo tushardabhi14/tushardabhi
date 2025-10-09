@@ -1,11 +1,11 @@
 {
-    "name": "tushar_portfolio",
-    "short_name": "tushar_portfolio",
+    "name": "Tushar Dabhi",
+    "short_name": "tushar",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Tushar Portfolio Web App",
+    "description": "Tushar Portfolio App",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
