@@ -1,24 +1,33 @@
-importScripts("https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js");
-importScripts("https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js");
+importScripts('https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.6.0/firebase-messaging-compat.js');
 
-// Initialize the Firebase app in the service worker by passing in the
-// messagingSenderId.
-// NOTE: You will need to replace this config with your actual project config
-// if you want background notifications to work on Web.
 firebase.initializeApp({
-  apiKey: "AIzaSyDZZtbJ0GkeE3gBe75YF6zUxmACTXYeusQ",
-  authDomain: "tushar-portfolio-34a21.firebaseapp.com",
-  databaseURL: "https://tushar-portfolio-34a21.firebaseio.com",
-  projectId: "tushar-portfolio-34a21",
-  storageBucket: "tushar-portfolio-34a21.firebasestorage.app",
-  messagingSenderId: "82609577726",
-  appId: "1:82609577726:web:f8cdb39a5b4b2df5544faf",
-  measurementId: "G-3QP9M04V22",
+  apiKey: "AIzaSyCo6aiDqr34bAQzMbSdV91W0-p_n6UDiIo",
+  authDomain: "furniquoteapp-dev.firebaseapp.com",
+  databaseURL: "https://furniquoteapp-dev-default-rtdb.firebaseio.com",
+  projectId: "furniquoteapp-dev",
+  storageBucket: "furniquoteapp-dev.firebasestorage.app",
+  messagingSenderId: "756530430220",
+  appId: "1:756530430220:web:09366dc8560b92fb870929",
+  measurementId: "G-0FPQ5DFF66"
 });
 
 const messaging = firebase.messaging();
 
-// Optional:
-messaging.onBackgroundMessage((message) => {
-  console.log("onBackgroundMessage", message);
+messaging.onBackgroundMessage((payload) => {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: 'icons/Icon-192.png'
+  };
+
+  const isApplePlatform = /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
+  if (!isApplePlatform && self.registration && self.registration.showNotification) {
+    self.registration.showNotification(notificationTitle, notificationOptions);
+  } else if (isApplePlatform) {
+    console.log('[firebase-messaging-sw.js] Notifications skipped on Apple platform');
+  } else {
+    console.log('[firebase-messaging-sw.js] showNotification not supported');
+  }
 });
