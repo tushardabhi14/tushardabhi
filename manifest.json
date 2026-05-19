@@ -1,11 +1,11 @@
 {
-    "name": "FurniQuote",
-    "short_name": "FurniQuote",
+    "name": "Tushar Dabhi | Portfolio",
+    "short_name": "Tushar Dabhi",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#2E7D32",
-    "description": "A comprehensive furniture quoting application for PVC and aluminum sections.",
+    "background_color": "#0175C2",
+    "theme_color": "#0175C2",
+    "description": "Tushar Dabhi | Portfolio",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -1,184 +1,38 @@
 <!DOCTYPE html>
 <html>
-
 <head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/tushardabhi/">
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Tushar Dabhi | Portfolio">
 
   <!-- iOS meta tags & icons -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="FurniQuote">
+  <meta name="apple-mobile-web-app-title" content="Tushar Dabhi | Portfolio">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Tushar Dabhi | Portfolio</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="referrer" content="no-referrer-when-downgrade">
-
-
-
-
-  <base href="/tushardabhi/">
-  <title>FurniQuote</title>
-
-  <script>
-    // Coordination with Flutter loader to ensure service workers are handled correctly
-    // Removing aggressive unregistration that caused conflicts and timeouts.
-
-    // Platform detection
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    const isMacOS = /Macintosh/.test(navigator.userAgent) && !isIOS;
-    const isApplePlatform = isIOS || isMacOS;
-
-
-
-    if (isApplePlatform) {
-      console.log("Notifications disabled for Apple platforms (iOS/macOS)");
-    }
-
-    // Resource error logging to debug 403 errors
-    window.addEventListener('error', function (e) {
-      if (e.target && (e.target.src || e.target.href)) {
-        const src = e.target.src || e.target.href;
-        // Ignore tracking/analytics resources blocked by adblockers/privacy settings
-        if (src.includes('googletagmanager.com') || src.includes('connect.facebook.net') || src.includes('clarity.ms') || src.includes('google-analytics.com')) {
-          console.warn('Analytics/Tracking resource blocked by browser/ad-blocker (this is expected and harmless):', src);
-          return;
-        }
-        console.error('Resource load failed:', src);
-      } else {
-        console.error('Global Error:', e.error || e.message);
-      }
-    }, true);
-
-    window.addEventListener('unhandledrejection', function (event) {
-      console.error('Unhandled Promise Rejection:', event.reason);
-    });
-  </script>
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-analytics-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-messaging-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-remote-config-compat.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="preconnect" href="https://checkout.razorpay.com">
-  <!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
-  <script src="razorpay_web.js"></script>
-
-
-  <script src="flutter_bootstrap.js" defer></script>
-
-  <script>
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyCo6aiDqr34bAQzMbSdV91W0-p_n6UDiIo",
-      authDomain: "furniquoteapp-dev.firebaseapp.com",
-      databaseURL: "https://furniquoteapp-dev-default-rtdb.firebaseio.com",
-      projectId: "furniquoteapp-dev",
-      storageBucket: "furniquoteapp-dev.firebasestorage.app",
-      messagingSenderId: "756530430220",
-      appId: "1:756530430220:web:09366dc8560b92fb870929",
-      measurementId: "G-0FPQ5DFF66"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-
-    // Initialize Firebase Analytics
-    const analytics = firebase.analytics();
-
-    // Initialize Firebase Messaging
-    const messaging = firebase.messaging();
-
-    // Configure Firebase Remote Config
-    const remoteConfig = firebase.remoteConfig();
-    remoteConfig.settings = {
-      minimumFetchIntervalMillis: 3600000, // 1 hour
-    };
-
-    // Request notification permission (safely defined but inactive to prevent errors if called)
-    window.requestNotificationPermission = function () {
-      console.log('Notification request skipped (handled by Flutter or disabled)');
-      return Promise.resolve(null);
-    };
-
-    // Handle incoming messages
-    messaging.onMessage((payload) => {
-      console.log('Message received. ', payload);
-      // Handle the received message
-      const notificationTitle = payload.notification?.title || 'New Notification';
-      const notificationOptions = {
-        body: payload.notification?.body || '',
-        icon: payload.notification?.icon || 'icons/Icon-192.png'
-      };
-
-      if (!isApplePlatform && window.Notification && window.Notification.permission === 'granted') {
-        new window.Notification(notificationTitle, notificationOptions);
-      }
-    });
-
-    // Initialize service worker (Disabled for iOS/Safari to avoid Notification API issues)
-    if ('serviceWorker' in navigator && !isIOS && !isSafari) {
-      window.addEventListener('load', () => {
-        // Use relative path to ensure it works with base-href
-        navigator.serviceWorker.register('firebase-messaging-sw.js')
-          .then(registration => {
-            console.log('Service Worker registered with scope: ', registration.scope);
-          })
-          .catch(err => {
-            console.log('Service Worker registration failed: ', err);
-          });
-      });
-    }
-
-    // Set default values for Remote Config
-    remoteConfig.defaultConfig = {
-      // Add your default config values here
-    };
-
-    // Fetch and activate Remote Config
-    remoteConfig.fetchAndActivate()
-      .then(() => {
-        console.log('Remote Config initialized');
-      })
-      .catch(err => {
-        console.error('Error initializing Remote Config', err);
-      });
-  </script>
-
-  <!-- Facebook Pixel Code -->
-  <script>
-    // Only load Facebook Pixel if not in development AND Pixel ID is provided
-    // const pixelId = 'YOUR_PIXEL_ID'; // Replace with actual ID
-    // if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && pixelId !== 'YOUR_PIXEL_ID') {
-    //   !function (f, b, e, v, n, t, s) {
-    //     if (f.fbq) return; n = f.fbq = function () {
-    //       n.callMethod ?
-    //         n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-    //     };
-    //     if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-    //     n.queue = []; t = b.createElement(e); t.async = !0;
-    //     t.src = v; s = b.getElementsByTagName(e)[0];
-    //     s.parentNode.insertBefore(t, s)
-    //   }(window, document, 'script',
-    //     'https://connect.facebook.net/en_US/fbevents.js');
-    //   fbq('init', pixelId);
-    //   fbq('track', 'PageView');
-    // } else {
-    //   console.log('Facebook Pixel skipped (development or missing ID)');
-    // }
-  </script>
-  <!-- End Facebook Pixel Code -->
 </head>
-
 <body>
+  <script src="flutter_bootstrap.js" async></script>
 </body>
-
 </html>
