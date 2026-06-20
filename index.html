@@ -31,8 +31,191 @@
 
   <title>Tushar Dabhi | Portfolio</title>
   <link rel="manifest" href="manifest.json">
+  <style>
+    /* Import modern font */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+
+    body {
+      background-color: #0f172a;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Ambient background glows */
+    .ambient-glow-1 {
+      position: absolute;
+      top: 20%;
+      left: 20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0) 70%);
+      filter: blur(50px);
+      pointer-events: none;
+      animation: pulseGlow 8s ease-in-out infinite alternate;
+    }
+
+    .ambient-glow-2 {
+      position: absolute;
+      bottom: 20%;
+      right: 20%;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0) 70%);
+      filter: blur(60px);
+      pointer-events: none;
+      animation: pulseGlow 10s ease-in-out infinite alternate-reverse;
+    }
+
+    /* Loader container */
+    #loader-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #0f172a;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    }
+
+    #loader-container.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Custom Neon Spinner */
+    .spinner-wrapper {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .spinner-outer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 3px solid transparent;
+      border-top: 3px solid #06b6d4;
+      border-right: 3px solid #06b6d4;
+      border-radius: 50%;
+      animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+    }
+
+    .spinner-inner {
+      position: absolute;
+      width: 70%;
+      height: 70%;
+      border: 3px solid transparent;
+      border-bottom: 3px solid #a855f7;
+      border-left: 3px solid #a855f7;
+      border-radius: 50%;
+      animation: spinReverse 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+    }
+
+    .spinner-logo {
+      font-size: 24px;
+      font-weight: 600;
+      color: #f8fafc;
+      text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+      animation: pulseText 2s ease-in-out infinite;
+    }
+
+    /* Text Loading Information */
+    .loading-title {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: 600;
+      color: #f8fafc;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .loading-subtitle {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #94a3b8;
+      letter-spacing: 1px;
+      font-weight: 300;
+    }
+
+    .progress-bar-container {
+      margin-top: 24px;
+      width: 200px;
+      height: 4px;
+      background-color: rgba(30, 41, 59, 0.8);
+      border-radius: 2px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .progress-bar-fill {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #06b6d4, #a855f7);
+      border-radius: 2px;
+      animation: indeterminateProgress 2s ease-in-out infinite;
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.5);
+    }
+
+    /* Animations */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes spinReverse {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-360deg); }
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.8; }
+      100% { transform: scale(1.2) translate(5%, 5%); opacity: 1; }
+    }
+
+    @keyframes pulseText {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 15px rgba(6, 182, 212, 0.8); }
+    }
+
+    @keyframes indeterminateProgress {
+      0% { transform: translateX(-100%); }
+      50% { transform: translateX(0%); }
+      100% { transform: translateX(100%); }
+    }
+  </style>
 </head>
 <body>
+  <!-- Ambient Background Glows -->
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- Custom Beautiful Loader -->
+  <div id="loader-container">
+    <div class="spinner-wrapper">
+      <div class="spinner-outer"></div>
+      <div class="spinner-inner"></div>
+      <div class="spinner-logo">T</div>
+    </div>
+    <div class="loading-title">Tushar Dabhi</div>
+    <div class="loading-subtitle">Portfolio is loading...</div>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill"></div>
+    </div>
+  </div>
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
