@@ -38,19 +38,22 @@ _flutter.buildConfig = {"engineRevision":"1e9a811bf8e70466596bcf0ea3a8b5adb5f17f
 
 
 _flutter.loader.load({
-  onEntrypointLoaded: async function(engineInitializer) {
+  onEntrypointLoaded: async function (engineInitializer) {
     const appRunner = await engineInitializer.initializeEngine();
-    
+
     // Smoothly fade out and remove loader
-    const loader = document.getElementById('loader-container');
-    if (loader) {
-      loader.classList.add('fade-out');
-      // Wait for transition to complete before removing from DOM
-      setTimeout(() => {
-        loader.remove();
-      }, 500);
+    if (typeof dismissLoader === 'function') {
+      dismissLoader();
+    } else {
+      const loader = document.getElementById('loader-container');
+      if (loader) {
+        loader.classList.add('fade-out');
+        setTimeout(() => {
+          if (loader.parentNode) loader.remove();
+        }, 500);
+      }
     }
-    
+
     await appRunner.runApp();
   }
 });
